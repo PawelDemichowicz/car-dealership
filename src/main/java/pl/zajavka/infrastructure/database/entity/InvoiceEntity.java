@@ -3,6 +3,8 @@ package pl.zajavka.infrastructure.database.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.OffsetDateTime;
+
 @Getter
 @Setter
 @EqualsAndHashCode(of = "invoiceId")
@@ -11,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "invoiceId")
+@Table(name = "invoice")
 public class InvoiceEntity {
 
     @Id
@@ -23,7 +25,7 @@ public class InvoiceEntity {
     private String invoiceNumber;
 
     @Column(name = "date_time")
-    private String dateTime;
+    private OffsetDateTime dateTime;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_to_buy_id")

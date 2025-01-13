@@ -14,13 +14,13 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "serviceId")
+@Table(name = "service")
 public class ServiceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "service_id")
-    private String serviceId;
+    private Integer serviceId;
 
     @Column(name = "service_code", unique = true)
     private String serviceCode;

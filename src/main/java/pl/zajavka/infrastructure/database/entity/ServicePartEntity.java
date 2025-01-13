@@ -12,13 +12,13 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "servicePartId")
+@Table(name = "service_part")
 public class ServicePartEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "service_part_id")
-    private String servicePartId;
+    private Integer servicePartId;
 
     @Column(name = "quantity")
     private Integer quantity;

@@ -14,13 +14,13 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "carServiceRequestId")
+@Table(name = "car_service_request")
 public class CarServiceRequestEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_service_request_id")
-    private String carServiceRequestId;
+    private Integer carServiceRequestId;
 
     @Column(name = "car_service_request_number", unique = true)
     private String carServiceRequestNumber;
@@ -39,7 +39,7 @@ public class CarServiceRequestEntity {
     private CustomerEntity customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_service_id")
+    @JoinColumn(name = "car_to_service_id")
     private CarToServiceEntity car;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "carServiceRequest")

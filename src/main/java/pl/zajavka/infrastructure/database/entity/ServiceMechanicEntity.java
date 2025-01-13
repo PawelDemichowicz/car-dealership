@@ -11,13 +11,13 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "serviceMechanicId")
+@Table(name = "service_mechanic")
 public class ServiceMechanicEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "service_mechanic_id")
-    private String serviceMechanicId;
+    private Integer serviceMechanicId;
 
     @Column(name = "hours")
     private Integer hours;

@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "mechanicId")
+@Table(name = "mechanic")
 public class MechanicEntity {
 
     @Id
