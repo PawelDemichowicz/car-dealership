@@ -26,8 +26,8 @@ public class CarDealershipManagementRepository implements CarDealershipManagemen
             session.createMutationQuery("DELETE FROM ServiceEntity ent").executeUpdate();
             session.createMutationQuery("DELETE FROM CarToBuyEntity ent").executeUpdate();
             session.createMutationQuery("DELETE FROM CarToServiceEntity ent").executeUpdate();
-            session.createMutationQuery("DELETE FROM AddressEntity ent").executeUpdate();
             session.createMutationQuery("DELETE FROM CustomerEntity ent").executeUpdate();
+            session.createMutationQuery("DELETE FROM AddressEntity ent").executeUpdate();
             session.createMutationQuery("DELETE FROM SalesmanEntity ent").executeUpdate();
 
             session.getTransaction().commit();
