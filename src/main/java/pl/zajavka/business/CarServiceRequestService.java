@@ -1,6 +1,7 @@
 package pl.zajavka.business;
 
 import lombok.AllArgsConstructor;
+import pl.zajavka.business.dao.CarServiceRequestDAO;
 import pl.zajavka.business.management.FileDataPreparationService;
 import pl.zajavka.domain.CarServiceRequest;
 import pl.zajavka.infrastructure.database.entity.CarServiceRequestEntity;
@@ -12,6 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -20,6 +22,7 @@ public class CarServiceRequestService {
     private final FileDataPreparationService fileDataPreparationService;
     private final CarService carService;
     private final CustomerService customerService;
+    private final CarServiceRequestDAO carServiceRequestDAO;
 
     public void requestService() {
         Map<Boolean, List<CarServiceRequest>> serviceRequests = fileDataPreparationService.createCarServiceRequests().stream()
@@ -85,4 +88,16 @@ public class CarServiceRequestService {
         return new Random().nextInt(max - min) + min;
     }
 
+    public CarServiceRequestEntity findAnyActiveServiceRequest(String carVin) {
+        Set<CarServiceRequestEntity> serviceRequests = carServiceRequestDAO.findActiveServiceRequestsByCarVin(carVin);
+        if (serviceRequests.size() != 1) {
+            throw new RuntimeException(
+                    "There should be only one active service request at time, car vin: [%s]".formatted(carVin));
+        }
+        return serviceRequests.stream()
+                .findAny()
+                .orElseThrow(() ->
+                        new RuntimeException("There should be only one active service request at time, car vin: [%s]"
+                                .formatted(carVin)));
+    }
 }
