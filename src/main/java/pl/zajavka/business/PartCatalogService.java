@@ -1,6 +1,7 @@
 package pl.zajavka.business;
 
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import pl.zajavka.business.dao.PartDAO;
 import pl.zajavka.domain.Part;
 
@@ -11,6 +12,7 @@ public class PartCatalogService {
 
     private final PartDAO partDAO;
 
+    @Transactional
     public Part findPart(String partSerialNumber) {
         Optional<Part> service = partDAO.findBySerialNumber(partSerialNumber);
         if (service.isEmpty()) {

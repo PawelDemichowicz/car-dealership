@@ -1,6 +1,7 @@
 package pl.zajavka.business;
 
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import pl.zajavka.business.management.FileDataPreparationService;
 import pl.zajavka.domain.*;
 
@@ -16,6 +17,7 @@ public class CarPurchaseService {
     private final CarService carService;
     private final SalesmanService salesmanService;
 
+    @Transactional
     public void purchase() {
         var firstTimeData = fileDataPreparationService.prepareFirstTimePurchaseData();
         var nextTimeData = fileDataPreparationService.prepareNextTimePurchaseData();

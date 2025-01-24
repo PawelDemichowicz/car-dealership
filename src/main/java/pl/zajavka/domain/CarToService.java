@@ -17,7 +17,7 @@ public class CarToService {
     String brand;
     String model;
     Integer year;
-    Set<CarServiceRequest> carToServiceRequests;
+    Set<CarServiceRequest> carServiceRequests;
 
     public Boolean shouldExistInCarToBuy() {
         return Objects.nonNull(vin)
