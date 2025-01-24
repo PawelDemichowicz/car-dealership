@@ -1,4 +1,4 @@
 package pl.zajavka.infrastructure.database.entity;
 
-public interface EntityMarker {
+public interface _EntityMarker {
 }

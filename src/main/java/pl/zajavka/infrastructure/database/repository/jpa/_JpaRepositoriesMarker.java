@@ -1,4 +1,4 @@
 package pl.zajavka.infrastructure.database.repository.jpa;
 
-public interface JpaRepositoriesMarker {
+public interface _JpaRepositoriesMarker {
 }
