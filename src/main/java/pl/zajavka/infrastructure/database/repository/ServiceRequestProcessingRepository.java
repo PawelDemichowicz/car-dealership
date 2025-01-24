@@ -2,7 +2,6 @@ package pl.zajavka.infrastructure.database.repository;
 
 import org.hibernate.Session;
 import pl.zajavka.business.dao.ServiceRequestProcessingDAO;
-import pl.zajavka.infrastructure.configuration.HibernateUtil;
 import pl.zajavka.infrastructure.database.entity.CarServiceRequestEntity;
 import pl.zajavka.infrastructure.database.entity.ServiceMechanicEntity;
 import pl.zajavka.infrastructure.database.entity.ServicePartEntity;

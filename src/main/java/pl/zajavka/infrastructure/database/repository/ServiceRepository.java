@@ -7,7 +7,6 @@ import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import pl.zajavka.business.dao.ServiceDAO;
-import pl.zajavka.infrastructure.configuration.HibernateUtil;
 import pl.zajavka.infrastructure.database.entity.ServiceEntity;
 
 import java.util.Objects;

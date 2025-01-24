@@ -2,7 +2,6 @@ package pl.zajavka.infrastructure.database.repository;
 
 import org.hibernate.Session;
 import pl.zajavka.business.dao.management.CarDealershipManagementServiceDAO;
-import pl.zajavka.infrastructure.configuration.HibernateUtil;
 
 import java.util.List;
 import java.util.Objects;
