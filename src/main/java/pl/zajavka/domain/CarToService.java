@@ -1,9 +1,8 @@
 package pl.zajavka.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
-import pl.zajavka.infrastructure.database.entity.CarServiceRequest;
 
+import java.util.Objects;
 import java.util.Set;
 
 @With
@@ -19,4 +18,11 @@ public class CarToService {
     String model;
     Integer year;
     Set<CarServiceRequest> carToServiceRequests;
+
+    public Boolean shouldExistInCarToBuy() {
+        return Objects.nonNull(vin)
+                && Objects.isNull(brand)
+                && Objects.isNull(model)
+                && Objects.isNull(year);
+    }
 }

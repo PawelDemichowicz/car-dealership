@@ -3,10 +3,9 @@ package pl.zajavka.business;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pl.zajavka.business.dao.CarDAO;
-import pl.zajavka.domain.CarServiceRequest;
-import pl.zajavka.infrastructure.database.entity.CarHistoryEntity;
-import pl.zajavka.infrastructure.database.entity.CarToBuyEntity;
-import pl.zajavka.infrastructure.database.entity.CarToServiceEntity;
+import pl.zajavka.domain.CarHistory;
+import pl.zajavka.domain.CarToBuy;
+import pl.zajavka.domain.CarToService;
 
 import java.util.Optional;
 
@@ -16,47 +15,47 @@ public class CarService {
 
     private final CarDAO carDAO;
 
-    public CarToBuyEntity findCarToBuy(String vin) {
-        Optional<CarToBuyEntity> carToBuyByVin = carDAO.findCarToBuyByVin(vin);
+    public CarToBuy findCarToBuy(String vin) {
+        Optional<CarToBuy> carToBuyByVin = carDAO.findCarToBuyByVin(vin);
         if (carToBuyByVin.isEmpty()) {
             throw new RuntimeException("Could not find car by vin: [%s]".formatted(vin));
         }
         return carToBuyByVin.get();
     }
 
-    public Optional<CarToServiceEntity> findCarToService(String vin) {
+    public Optional<CarToService> findCarToService(String vin) {
         return carDAO.findCarToServiceByVin(vin);
     }
 
-    public CarToServiceEntity saveCarToService(CarToBuyEntity carToBuy) {
-        CarToServiceEntity entity = CarToServiceEntity.builder()
+    public CarToService saveCarToService(CarToBuy carToBuy) {
+        CarToService domain = CarToService.builder()
                 .vin(carToBuy.getVin())
                 .brand(carToBuy.getBrand())
                 .model(carToBuy.getModel())
                 .year(carToBuy.getYear())
                 .build();
-        return carDAO.saveCarToService(entity);
+        return carDAO.saveCarToService(domain);
     }
 
-    public CarToServiceEntity saveCarToService(CarServiceRequest.Car car) {
-        CarToServiceEntity entity = CarToServiceEntity.builder()
+    public CarToService saveCarToService(CarToService car) {
+        CarToService domain = CarToService.builder()
                 .vin(car.getVin())
                 .brand(car.getBrand())
                 .model(car.getModel())
                 .year(car.getYear())
                 .build();
-        return carDAO.saveCarToService(entity);
+        return carDAO.saveCarToService(domain);
     }
 
     public void printCarHistory(String vin) {
-        CarHistoryEntity carHistoryEntity = carDAO.findCarHistoryByVin(vin);
+        CarHistory carHistory = carDAO.findCarHistoryByVin(vin);
         log.info("###CAR HISTORY FOR VIN: [{}]", vin);
-        carHistoryEntity.getServiceRequests().forEach(this::printServiceRequest);
+        carHistory.getCarServiceRequests().forEach(this::printServiceRequest);
     }
 
-    private void printServiceRequest(CarHistoryEntity.ServiceRequest serviceRequest) {
+    private void printServiceRequest(CarHistory.CarServiceRequest serviceRequest) {
         log.info("###SERVICE REQUEST: [{}]", serviceRequest);
-        serviceRequest.services().forEach(service -> log.info("###SERVICE: [{}]", service));
-        serviceRequest.parts().forEach(part -> log.info("###PART: [{}]", part));
+        serviceRequest.getServices().forEach(service -> log.info("###SERVICE: [{}]", service));
+        serviceRequest.getParts().forEach(part -> log.info("###PART: [{}]", part));
     }
 }

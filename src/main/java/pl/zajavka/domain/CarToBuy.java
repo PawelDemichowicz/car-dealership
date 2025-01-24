@@ -1,8 +1,6 @@
 package pl.zajavka.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
-import pl.zajavka.infrastructure.database.entity.Invoice;
 
 import java.math.BigDecimal;
 

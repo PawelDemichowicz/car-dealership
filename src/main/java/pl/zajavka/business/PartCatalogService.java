@@ -2,7 +2,7 @@ package pl.zajavka.business;
 
 import lombok.AllArgsConstructor;
 import pl.zajavka.business.dao.PartDAO;
-import pl.zajavka.infrastructure.database.entity.PartEntity;
+import pl.zajavka.domain.Part;
 
 import java.util.Optional;
 
@@ -11,8 +11,8 @@ public class PartCatalogService {
 
     private final PartDAO partDAO;
 
-    public PartEntity findPart(String partSerialNumber) {
-        Optional<PartEntity> service = partDAO.findBySerialNumber(partSerialNumber);
+    public Part findPart(String partSerialNumber) {
+        Optional<Part> service = partDAO.findBySerialNumber(partSerialNumber);
         if (service.isEmpty()) {
             throw new RuntimeException("Could not find service by part code: [%s]".formatted(partSerialNumber));
         }

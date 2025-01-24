@@ -1,18 +1,18 @@
 package pl.zajavka.business.dao;
 
-import pl.zajavka.infrastructure.database.entity.CarHistoryEntity;
-import pl.zajavka.infrastructure.database.entity.CarToBuyEntity;
-import pl.zajavka.infrastructure.database.entity.CarToServiceEntity;
+import pl.zajavka.domain.CarHistory;
+import pl.zajavka.domain.CarToBuy;
+import pl.zajavka.domain.CarToService;
 
 import java.util.Optional;
 
 public interface CarDAO {
 
-    Optional<CarToBuyEntity> findCarToBuyByVin(String vin);
+    Optional<CarToBuy> findCarToBuyByVin(String vin);
 
-    Optional<CarToServiceEntity> findCarToServiceByVin(String vin);
+    Optional<CarToService> findCarToServiceByVin(String vin);
 
-    CarToServiceEntity saveCarToService(CarToServiceEntity entity);
+    CarToService saveCarToService(CarToService domain);
 
-    CarHistoryEntity findCarHistoryByVin(String vin);
+    CarHistory findCarHistoryByVin(String vin);
 }

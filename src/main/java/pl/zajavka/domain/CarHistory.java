@@ -18,7 +18,7 @@ public class CarHistory {
     @Value
     @Builder
     @ToString(of = {"carServiceRequestNumber", "receivedDateTime", "completedDateTime", "customerComment"})
-    public static class CarServiceRequest() {
+    public static class CarServiceRequest {
 
         String carServiceRequestNumber;
         OffsetDateTime receivedDateTime;

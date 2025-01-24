@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import pl.zajavka.business.dao.CarServiceRequestDAO;
 import pl.zajavka.business.management.FileDataPreparationService;
 import pl.zajavka.domain.CarServiceRequest;
-import pl.zajavka.infrastructure.database.entity.CarServiceRequestEntity;
-import pl.zajavka.infrastructure.database.entity.CarToBuyEntity;
-import pl.zajavka.infrastructure.database.entity.CarToServiceEntity;
-import pl.zajavka.infrastructure.database.entity.CustomerEntity;
+import pl.zajavka.domain.CarToBuy;
+import pl.zajavka.domain.CarToService;
+import pl.zajavka.domain.Customer;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -25,44 +24,47 @@ public class CarServiceRequestService {
     private final CarServiceRequestDAO carServiceRequestDAO;
 
     public void requestService() {
-        Map<Boolean, List<CarServiceRequest>> serviceRequests = fileDataPreparationService.createCarServiceRequests().stream()
-                .collect(Collectors.groupingBy(element -> element.getCar().shouldExistInCarToBuy()));
+        Map<Boolean, List<CarServiceRequest>> serviceRequests =
+                fileDataPreparationService.createCarServiceRequests().stream()
+                        .collect(Collectors.groupingBy(element -> element.getCar().shouldExistInCarToBuy()));
 
         serviceRequests.get(true).forEach(this::saveServiceRequestsForExistingCar);
         serviceRequests.get(false).forEach(this::saveServiceRequestsForNewCar);
     }
 
     private void saveServiceRequestsForExistingCar(CarServiceRequest request) {
-        CarToServiceEntity car = carService.findCarToService(request.getCar().getVin())
+        CarToService car = carService.findCarToService(request.getCar().getVin())
                 .orElse(findInCarToBuyAndSaveInCarToService(request.getCar()));
-        CustomerEntity customer = customerService.findCustomer(request.getCustomer().getEmail());
+        Customer customer = customerService.findCustomer(request.getCustomer().getEmail());
 
-        CarServiceRequestEntity carServiceRequestEntity = buildServiceRequestEntity(request, car, customer);
-        customer.addServiceRequest(carServiceRequestEntity);
+        CarServiceRequest carServiceRequest = buildServiceRequest(request, car, customer);
+        Set<CarServiceRequest> existingCarServiceRequests = customer.getCarServiceRequests();
+        existingCarServiceRequests.add(carServiceRequest);
         customerService.saveServiceRequest(customer);
     }
 
-    private CarToServiceEntity findInCarToBuyAndSaveInCarToService(CarServiceRequest.Car car) {
-        CarToBuyEntity carToBuy = carService.findCarToBuy(car.getVin());
+    private CarToService findInCarToBuyAndSaveInCarToService(CarToService car) {
+        CarToBuy carToBuy = carService.findCarToBuy(car.getVin());
         return carService.saveCarToService(carToBuy);
     }
 
     private void saveServiceRequestsForNewCar(CarServiceRequest request) {
-        CarToServiceEntity car = carService.saveCarToService(request.getCar());
-        CustomerEntity customer = customerService.saveCustomer(request.getCustomer());
+        CarToService car = carService.saveCarToService(request.getCar());
+        Customer customer = customerService.saveCustomer(request.getCustomer());
 
-        CarServiceRequestEntity carServiceRequestEntity = buildServiceRequestEntity(request, car, customer);
-        customer.addServiceRequest(carServiceRequestEntity);
+        CarServiceRequest carServiceRequest = buildServiceRequest(request, car, customer);
+        Set<CarServiceRequest> existingCarServiceRequests = customer.getCarServiceRequests();
+        existingCarServiceRequests.add(carServiceRequest);
         customerService.saveServiceRequest(customer);
     }
 
-    private CarServiceRequestEntity buildServiceRequestEntity(
+    private CarServiceRequest buildServiceRequest(
             CarServiceRequest request,
-            CarToServiceEntity car,
-            CustomerEntity customer
+            CarToService car,
+            Customer customer
     ) {
         OffsetDateTime when = OffsetDateTime.now();
-        return CarServiceRequestEntity.builder()
+        return CarServiceRequest.builder()
                 .carServiceRequestNumber(generateCarServiceRequestNumber(when))
                 .receivedDateTime(when)
                 .customerComment(request.getCustomerComment())
@@ -88,8 +90,8 @@ public class CarServiceRequestService {
         return new Random().nextInt(max - min) + min;
     }
 
-    public CarServiceRequestEntity findAnyActiveServiceRequest(String carVin) {
-        Set<CarServiceRequestEntity> serviceRequests = carServiceRequestDAO.findActiveServiceRequestsByCarVin(carVin);
+    public CarServiceRequest findAnyActiveServiceRequest(String carVin) {
+        Set<CarServiceRequest> serviceRequests = carServiceRequestDAO.findActiveServiceRequestsByCarVin(carVin);
         if (serviceRequests.size() != 1) {
             throw new RuntimeException(
                     "There should be only one active service request at time, car vin: [%s]".formatted(carVin));

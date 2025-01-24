@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import pl.zajavka.business.dao.ServiceRequestProcessingDAO;
 import pl.zajavka.business.management.FileDataPreparationService;
 import pl.zajavka.business.management.Keys;
-import pl.zajavka.infrastructure.database.entity.*;
+import pl.zajavka.domain.*;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,38 +22,38 @@ public class CarServiceProcessingService {
     private final ServiceRequestProcessingDAO serviceRequestProcessingDAO;
 
     public void process() {
-        List<CarServiceProcessingRequest> toProcess = fileDataPreparationService.prepareServiceRequestsToProcess();
+        List<CarServiceProcessingInputData> toProcess = fileDataPreparationService.prepareServiceRequestsToProcess();
         toProcess.forEach(this::processRequest);
     }
 
-    private void processRequest(CarServiceProcessingRequest request) {
-        MechanicEntity mechanic = mechanicService.findMechanic(request.getMechanicPesel());
+    private void processRequest(CarServiceProcessingInputData request) {
+        Mechanic mechanic = mechanicService.findMechanic(request.getMechanicPesel());
         carService.findCarToService(request.getCarVin()).orElseThrow();
-        CarServiceRequestEntity serviceRequest = carServiceRequestService.findAnyActiveServiceRequest(request.getCarVin());
+        CarServiceRequest serviceRequest = carServiceRequestService.findAnyActiveServiceRequest(request.getCarVin());
 
-        ServiceEntity service = serviceCatalogService.findService(request.getServiceCode());
-        ServiceMechanicEntity serviceMechanicEntity = buildServiceMechanicEntity(request, mechanic, serviceRequest, service);
+        Service service = serviceCatalogService.findService(request.getServiceCode());
+        ServiceMechanic serviceMechanic = buildServiceMechanic(request, mechanic, serviceRequest, service);
 
         if (Keys.Constants.FINISHED.toString().equals(request.getDone())) {
-            serviceRequest.setCompletedDateTime(OffsetDateTime.now());
+            serviceRequest = serviceRequest.withCompletedDateTime(OffsetDateTime.now());
         }
 
         if (Objects.isNull(request.getPartSerialNumber()) || Objects.isNull(request.getPartQuantity())) {
-            serviceRequestProcessingDAO.process(serviceRequest, serviceMechanicEntity);
+            serviceRequestProcessingDAO.process(serviceRequest, serviceMechanic);
         } else {
-            PartEntity part = partCatalogService.findPart(request.getPartSerialNumber());
-            ServicePartEntity servicePartEntity = buildServicePartEntity(request, serviceRequest, part);
-            serviceRequestProcessingDAO.process(serviceRequest, serviceMechanicEntity, servicePartEntity);
+            Part part = partCatalogService.findPart(request.getPartSerialNumber());
+            ServicePart servicePart = buildServicePart(request, serviceRequest, part);
+            serviceRequestProcessingDAO.process(serviceRequest, serviceMechanic, servicePart);
         }
     }
 
-    private ServiceMechanicEntity buildServiceMechanicEntity(
-            CarServiceProcessingRequest request,
-            MechanicEntity mechanic,
-            CarServiceRequestEntity serviceRequest,
-            ServiceEntity service
+    private ServiceMechanic buildServiceMechanic(
+            CarServiceProcessingInputData request,
+            Mechanic mechanic,
+            CarServiceRequest serviceRequest,
+            Service service
     ) {
-        return ServiceMechanicEntity.builder()
+        return ServiceMechanic.builder()
                 .hours(request.getHours())
                 .comment(request.getComment())
                 .carServiceRequest(serviceRequest)
@@ -62,12 +62,12 @@ public class CarServiceProcessingService {
                 .build();
     }
 
-    private ServicePartEntity buildServicePartEntity(
-            CarServiceProcessingRequest request,
-            CarServiceRequestEntity serviceRequest,
-            PartEntity part
+    private ServicePart buildServicePart(
+            CarServiceProcessingInputData request,
+            CarServiceRequest serviceRequest,
+            Part part
     ) {
-        return ServicePartEntity.builder()
+        return ServicePart.builder()
                 .quantity(request.getPartQuantity())
                 .carServiceRequest(serviceRequest)
                 .part(part)
