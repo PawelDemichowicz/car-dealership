@@ -28,7 +28,7 @@ values
 ('43063-180', 'Wymiana korka do oleju', '17.19'),
 ('14222-2022', 'Wymiana filtra paliwa', '14.98');
 
-INSERT INTO PART (part_number, description, price)
+INSERT INTO PART (serial_number, description, price)
 values
 ('11523-7310', 'Koło', '320.11'),
 ('54340-777', 'Olej', '270.18'),

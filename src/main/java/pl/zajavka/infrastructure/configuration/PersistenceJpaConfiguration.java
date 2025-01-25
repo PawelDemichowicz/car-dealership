@@ -1,5 +1,7 @@
 package pl.zajavka.infrastructure.configuration;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.AllArgsConstructor;
 import org.flywaydb.core.Flyway;
@@ -12,7 +14,6 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -31,18 +32,6 @@ import java.util.Properties;
 @PropertySource({"classpath:database.properties"})
 @EnableJpaRepositories(basePackageClasses = _JpaRepositoriesMarker.class)
 public class PersistenceJpaConfiguration {
-//
-//    private static final Map<String, Object> HIBERNATE_SETTINGS = Map.ofEntries(
-//            Map.entry(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider"),
-
-//    );
-//
-//    private static final Map<String, Object> HIKARI_CP_SETTINGS = Map.ofEntries(
-//            Map.entry("hibernate.hikari.connectionTimeout", "20000"),
-//            Map.entry("hibernate.hikari.minimumIdle", "10"),
-//            Map.entry("hibernate.hikari.maximumPoolSize", "20"),
-//            Map.entry("hibernate.hikari.idleTimeout", "300000")
-//    );
 
     private final org.springframework.core.env.Environment environment;
 
@@ -66,14 +55,23 @@ public class PersistenceJpaConfiguration {
         return properties;
     }
 
-    @Bean
-    private DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty("jdbc.driverClassName")));
-        dataSource.setUrl(environment.getProperty("jdbc.url"));
-        dataSource.setUsername(environment.getProperty("jdbc.user"));
-        dataSource.setPassword(environment.getProperty("jdbc.pass"));
-        return dataSource;
+    @Bean(destroyMethod = "close")
+    public DataSource dataSource() {
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setDriverClassName(Objects.requireNonNull(environment.getProperty("jdbc.driverClassName")));
+        hikariConfig.setJdbcUrl(environment.getProperty("jdbc.url"));
+        hikariConfig.setUsername(environment.getProperty("jdbc.user"));
+        hikariConfig.setPassword(environment.getProperty("jdbc.pass"));
+
+        hikariConfig.setConnectionTestQuery("SELECT 1");
+        hikariConfig.setPoolName("springHikariCP");
+
+        hikariConfig.setMaximumPoolSize(20);
+        hikariConfig.setConnectionTimeout(20000);
+        hikariConfig.setMinimumIdle(10);
+        hikariConfig.setIdleTimeout(300000);
+
+        return new HikariDataSource(hikariConfig);
     }
 
     @Bean
