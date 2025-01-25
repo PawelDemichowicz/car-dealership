@@ -15,11 +15,11 @@ public interface CarToServiceJpaRepository extends JpaRepository<CarToServiceEnt
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,
             attributePaths = {
-                    "carServiceRequest",
-                    "carServiceRequest.serviceMechanics",
-                    "carServiceRequest.serviceMechanics.service",
-                    "carServiceRequest.serviceParts",
-                    "carServiceRequest.serviceParts.part"
+                    "carServiceRequests",
+                    "carServiceRequests.serviceMechanics",
+                    "carServiceRequests.serviceMechanics.service",
+                    "carServiceRequests.serviceParts",
+                    "carServiceRequests.serviceParts.part"
             }
     )
     CarToServiceEntity findCarHistoryByVin(String vin);

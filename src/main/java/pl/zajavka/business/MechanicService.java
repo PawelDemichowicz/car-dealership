@@ -1,12 +1,14 @@
 package pl.zajavka.business;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.zajavka.business.dao.MechanicDAO;
 import pl.zajavka.domain.Mechanic;
 
 import java.util.Optional;
 
+@Service
 @AllArgsConstructor
 public class MechanicService {
 

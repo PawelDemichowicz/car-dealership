@@ -1,6 +1,7 @@
 package pl.zajavka.business;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.zajavka.business.dao.CarServiceRequestDAO;
 import pl.zajavka.business.management.FileDataPreparationService;
@@ -16,6 +17,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
 @AllArgsConstructor
 public class CarServiceRequestService {
 
@@ -42,7 +44,7 @@ public class CarServiceRequestService {
         CarServiceRequest carServiceRequest = buildServiceRequest(request, car, customer);
         Set<CarServiceRequest> existingCarServiceRequests = customer.getCarServiceRequests();
         existingCarServiceRequests.add(carServiceRequest);
-        customerService.saveServiceRequest(customer);
+        customerService.saveServiceRequest(customer.withCarServiceRequests(existingCarServiceRequests));
     }
 
     private CarToService findInCarToBuyAndSaveInCarToService(CarToService car) {
@@ -57,7 +59,7 @@ public class CarServiceRequestService {
         CarServiceRequest carServiceRequest = buildServiceRequest(request, car, customer);
         Set<CarServiceRequest> existingCarServiceRequests = customer.getCarServiceRequests();
         existingCarServiceRequests.add(carServiceRequest);
-        customerService.saveServiceRequest(customer);
+        customerService.saveServiceRequest(customer.withCarServiceRequests(existingCarServiceRequests));
     }
 
     private CarServiceRequest buildServiceRequest(

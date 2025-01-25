@@ -1,7 +1,6 @@
 package pl.zajavka.domain;
 
 import lombok.*;
-import pl.zajavka.infrastructure.database.entity.CustomerEntity;
 
 @With
 @Value
