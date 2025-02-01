@@ -5,16 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.zajavka.business.dao.CarServiceRequestDAO;
 import pl.zajavka.business.management.FileDataPreparationService;
-import pl.zajavka.domain.CarServiceRequest;
-import pl.zajavka.domain.CarToBuy;
-import pl.zajavka.domain.CarToService;
-import pl.zajavka.domain.Customer;
+import pl.zajavka.domain.*;
 
 import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +19,11 @@ public class CarServiceRequestService {
     private final CarService carService;
     private final CustomerService customerService;
     private final CarServiceRequestDAO carServiceRequestDAO;
+    private final MechanicService mechanicService;
+
+    public List<Mechanic> availableMechanics() {
+        return mechanicService.findAvailableMechanics();
+    }
 
     @Transactional
     public void requestService() {

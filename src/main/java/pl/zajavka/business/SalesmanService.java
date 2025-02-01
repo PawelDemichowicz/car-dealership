@@ -1,18 +1,29 @@
 package pl.zajavka.business;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.zajavka.business.dao.SalesmanDAO;
+import pl.zajavka.domain.CarToBuy;
 import pl.zajavka.domain.Salesman;
 
+import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class SalesmanService {
 
     private final SalesmanDAO salesmanDAO;
+
+    @Transactional
+    public List<Salesman> findAvailableSalesmen() {
+        List<Salesman> availableSalesmen = salesmanDAO.findAvailable();
+        log.info("Available salesmen: [{}]", availableSalesmen.size());
+        return availableSalesmen;
+    }
 
     @Transactional
     public Salesman findSalesman(String pesel) {

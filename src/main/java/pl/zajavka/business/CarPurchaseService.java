@@ -13,11 +13,19 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class CarPurchaseService {
-
     private final FileDataPreparationService fileDataPreparationService;
+
     private final CustomerService customerService;
     private final CarService carService;
     private final SalesmanService salesmanService;
+
+    public List<CarToBuy> availableCars() {
+        return carService.findAvailableCars();
+    }
+
+    public List<Salesman> availableSalesman() {
+        return salesmanService.findAvailableSalesmen();
+    }
 
     public void purchase() {
         var firstTimeData = fileDataPreparationService.prepareFirstTimePurchaseData();
