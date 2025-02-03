@@ -6,10 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.zajavka.business.dao.CarServiceRequestDAO;
 import pl.zajavka.business.management.FileDataPreparationService;
 import pl.zajavka.domain.*;
+import pl.zajavka.domain.exception.ProcessingException;
 
 import java.time.OffsetDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -26,16 +28,17 @@ public class CarServiceRequestService {
     }
 
     @Transactional
-    public void requestService() {
-        Map<Boolean, List<CarServiceRequest>> serviceRequests =
-                fileDataPreparationService.createCarServiceRequests().stream()
-                        .collect(Collectors.groupingBy(element -> element.getCar().shouldExistInCarToBuy()));
-
-        serviceRequests.get(true).forEach(this::saveServiceRequestsForExistingCar);
-        serviceRequests.get(false).forEach(this::saveServiceRequestsForNewCar);
+    public void makeServiceRequest(CarServiceRequest serviceRequest) {
+        if (serviceRequest.getCar().shouldExistInCarToBuy()) {
+            saveServiceRequestsForExistingCar(serviceRequest);
+        } else {
+            saveServiceRequestsForNewCar(serviceRequest);
+        }
     }
 
     private void saveServiceRequestsForExistingCar(CarServiceRequest request) {
+        validate(request.getCar().getVin());
+
         CarToService car = carService.findCarToService(request.getCar().getVin())
                 .orElse(findInCarToBuyAndSaveInCarToService(request.getCar()));
         Customer customer = customerService.findCustomer(request.getCustomer().getEmail());
@@ -46,12 +49,9 @@ public class CarServiceRequestService {
         customerService.saveServiceRequest(customer.withCarServiceRequests(existingCarServiceRequests));
     }
 
-    private CarToService findInCarToBuyAndSaveInCarToService(CarToService car) {
-        CarToBuy carToBuy = carService.findCarToBuy(car.getVin());
-        return carService.saveCarToService(carToBuy);
-    }
-
     private void saveServiceRequestsForNewCar(CarServiceRequest request) {
+        validate(request.getCar().getVin());
+
         CarToService car = carService.saveCarToService(request.getCar());
         Customer customer = customerService.saveCustomer(request.getCustomer());
 
@@ -59,6 +59,20 @@ public class CarServiceRequestService {
         Set<CarServiceRequest> existingCarServiceRequests = customer.getCarServiceRequests();
         existingCarServiceRequests.add(carServiceRequest);
         customerService.saveServiceRequest(customer.withCarServiceRequests(existingCarServiceRequests));
+    }
+
+    private void validate(String carVin) {
+        Set<CarServiceRequest> serviceRequests = carServiceRequestDAO.findActiveServiceRequestsByCarVin(carVin);
+        if (serviceRequests.size() == 1) {
+            throw new ProcessingException(
+                    "there should be ony one active service request at a time, car vin: [%s]".formatted(carVin)
+            );
+        }
+    }
+
+    private CarToService findInCarToBuyAndSaveInCarToService(CarToService car) {
+        CarToBuy carToBuy = carService.findCarToBuy(car.getVin());
+        return carService.saveCarToService(carToBuy);
     }
 
     private CarServiceRequest buildServiceRequest(
