@@ -58,16 +58,14 @@ public class CarService {
         return carToServiceDAO.saveCarToService(carToService);
     }
 
-    @Transactional
-    public void printCarHistory(String vin) {
-        CarHistory carHistory = carToServiceDAO.findCarHistoryByVin(vin);
-        log.info("###CAR HISTORY FOR VIN: [{}]", vin);
-        carHistory.getCarServiceRequests().forEach(this::printServiceRequest);
+
+    public List<CarToService> findAllCarsWithHistory() {
+        List<CarToService> allCars = carToServiceDAO.findAll();
+        log.info("Cars to show history: [{}]", allCars.size());
+        return allCars;
     }
 
-    private void printServiceRequest(CarHistory.CarServiceRequest serviceRequest) {
-        log.info("###SERVICE REQUEST: [{}]", serviceRequest);
-        serviceRequest.getServices().forEach(service -> log.info("###SERVICE: [{}]", service));
-        serviceRequest.getParts().forEach(part -> log.info("###PART: [{}]", part));
+    public CarHistory findCarHistoryByVin(String carVin) {
+        return carToServiceDAO.findCarHistoryByVin(carVin);
     }
 }
