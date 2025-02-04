@@ -21,7 +21,7 @@ public class CarServiceRequestRepository implements CarServiceRequestDAO {
     @Override
     public List<CarServiceRequest> findAvailable() {
         return carServiceRequestJpaRepository.findAllByCompletedDateTimeIsNull().stream()
-                .map(carServiceRequestEntityMapper::mapFromEntity)
+                .map(carServiceRequestEntityMapper::mapFromEntityWithCar)
                 .toList();
     }
 
