@@ -2,19 +2,15 @@ package pl.zajavka.business;
 
 import lombok.AllArgsConstructor;
 import pl.zajavka.business.dao.ServiceRequestProcessingDAO;
-import pl.zajavka.business.management.FileDataPreparationService;
-import pl.zajavka.business.management.Keys;
 import pl.zajavka.domain.*;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Objects;
 
 @org.springframework.stereotype.Service
 @AllArgsConstructor
 public class CarServiceProcessingService {
 
-    private final FileDataPreparationService fileDataPreparationService;
     private final MechanicService mechanicService;
     private final CarService carService;
     private final ServiceCatalogService serviceCatalogService;
@@ -22,12 +18,7 @@ public class CarServiceProcessingService {
     private final CarServiceRequestService carServiceRequestService;
     private final ServiceRequestProcessingDAO serviceRequestProcessingDAO;
 
-    public void process() {
-        List<CarServiceProcessingInputData> toProcess = fileDataPreparationService.prepareServiceRequestsToProcess();
-        toProcess.forEach(this::processRequest);
-    }
-
-    private void processRequest(CarServiceProcessingInputData request) {
+    public void process(CarServiceProcessingRequest request) {
         Mechanic mechanic = mechanicService.findMechanic(request.getMechanicPesel());
         carService.findCarToService(request.getCarVin()).orElseThrow();
         CarServiceRequest serviceRequest = carServiceRequestService.findAnyActiveServiceRequest(request.getCarVin());
@@ -35,11 +26,11 @@ public class CarServiceProcessingService {
         Service service = serviceCatalogService.findService(request.getServiceCode());
         ServiceMechanic serviceMechanic = buildServiceMechanic(request, mechanic, serviceRequest, service);
 
-        if (Keys.Constants.FINISHED.toString().equals(request.getDone())) {
+        if (request.getDone()) {
             serviceRequest = serviceRequest.withCompletedDateTime(OffsetDateTime.now());
         }
 
-        if (Objects.isNull(request.getPartSerialNumber()) || Objects.isNull(request.getPartQuantity())) {
+        if (request.partNotIncluded()) {
             serviceRequestProcessingDAO.process(serviceRequest, serviceMechanic);
         } else {
             Part part = partCatalogService.findPart(request.getPartSerialNumber());
@@ -49,7 +40,7 @@ public class CarServiceProcessingService {
     }
 
     private ServiceMechanic buildServiceMechanic(
-            CarServiceProcessingInputData request,
+            CarServiceProcessingRequest request,
             Mechanic mechanic,
             CarServiceRequest serviceRequest,
             Service service
@@ -64,7 +55,7 @@ public class CarServiceProcessingService {
     }
 
     private ServicePart buildServicePart(
-            CarServiceProcessingInputData request,
+            CarServiceProcessingRequest request,
             CarServiceRequest serviceRequest,
             Part part
     ) {

@@ -9,6 +9,7 @@ import pl.zajavka.domain.*;
 import pl.zajavka.domain.exception.ProcessingException;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -16,8 +17,8 @@ import java.util.Set;
 @Service
 @AllArgsConstructor
 public class CarServiceRequestService {
-
     private final FileDataPreparationService fileDataPreparationService;
+
     private final CarService carService;
     private final CustomerService customerService;
     private final CarServiceRequestDAO carServiceRequestDAO;
@@ -25,6 +26,10 @@ public class CarServiceRequestService {
 
     public List<Mechanic> availableMechanics() {
         return mechanicService.findAvailableMechanics();
+    }
+
+    public List<CarServiceRequest> availableServiceRequests() {
+        return carServiceRequestDAO.findAvailable();
     }
 
     @Transactional

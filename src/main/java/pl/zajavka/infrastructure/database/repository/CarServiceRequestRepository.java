@@ -7,6 +7,7 @@ import pl.zajavka.domain.CarServiceRequest;
 import pl.zajavka.infrastructure.database.repository.jpa.CarServiceRequestJpaRepository;
 import pl.zajavka.infrastructure.database.repository.mapper.CarServiceRequestEntityMapper;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,13 @@ public class CarServiceRequestRepository implements CarServiceRequestDAO {
 
     private final CarServiceRequestJpaRepository carServiceRequestJpaRepository;
     private final CarServiceRequestEntityMapper carServiceRequestEntityMapper;
+
+    @Override
+    public List<CarServiceRequest> findAvailable() {
+        return carServiceRequestJpaRepository.findAllByCompletedDateTimeIsNull().stream()
+                .map(carServiceRequestEntityMapper::mapFromEntity)
+                .toList();
+    }
 
     @Override
     public Set<CarServiceRequest> findActiveServiceRequestsByCarVin(String carVin) {

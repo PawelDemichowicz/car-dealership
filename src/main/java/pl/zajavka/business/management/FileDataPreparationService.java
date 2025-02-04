@@ -94,15 +94,15 @@ public class FileDataPreparationService {
                 .build();
     }
 
-    public List<CarServiceProcessingInputData> prepareServiceRequestsToProcess() {
+    public List<CarServiceProcessingRequest> prepareServiceRequestsToProcess() {
         return InputDataCache.getInputData(Keys.InputDataGroup.DO_THE_SERVICE, this::prepareMap).stream()
                 .map(this::createCarServiceRequestToProcess)
                 .toList();
     }
 
-    private CarServiceProcessingInputData createCarServiceRequestToProcess(Map<String, List<String>> inputData) {
+    private CarServiceProcessingRequest createCarServiceRequestToProcess(Map<String, List<String>> inputData) {
         List<String> whats = inputData.get(Keys.Constants.WHAT.toString());
-        return CarServiceProcessingInputData.builder()
+        return CarServiceProcessingRequest.builder()
                 .mechanicPesel(inputData.get(Keys.Domain.MECHANIC.toString()).get(0))
                 .carVin(inputData.get(Keys.Domain.CAR.toString()).get(0))
                 .partSerialNumber(Optional.of(whats.get(0)).filter(value -> !value.isBlank()).orElse(null))
