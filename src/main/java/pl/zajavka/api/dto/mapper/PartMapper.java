@@ -2,8 +2,6 @@ package pl.zajavka.api.dto.mapper;
 
 import org.mapstruct.Mapper;
 import pl.zajavka.api.dto.PartDTO;
-import pl.zajavka.api.dto.ServiceDTO;
-import pl.zajavka.business.dao.PartDAO;
 import pl.zajavka.domain.Part;
 
 @Mapper(componentModel = "spring")

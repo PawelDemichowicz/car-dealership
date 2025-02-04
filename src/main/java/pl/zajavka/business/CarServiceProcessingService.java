@@ -5,7 +5,6 @@ import pl.zajavka.business.dao.ServiceRequestProcessingDAO;
 import pl.zajavka.domain.*;
 
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 @org.springframework.stereotype.Service
 @AllArgsConstructor

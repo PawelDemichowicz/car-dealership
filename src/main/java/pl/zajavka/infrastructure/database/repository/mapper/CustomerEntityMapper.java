@@ -1,6 +1,5 @@
 package pl.zajavka.infrastructure.database.repository.mapper;
 
-import jdk.jfr.Name;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

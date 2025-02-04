@@ -3,7 +3,6 @@ package pl.zajavka.business;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.zajavka.business.management.FileDataPreparationService;
 import pl.zajavka.domain.*;
 
 import java.time.OffsetDateTime;
@@ -14,7 +13,6 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class CarPurchaseService {
-    private final FileDataPreparationService fileDataPreparationService;
 
     private final CustomerService customerService;
     private final CarService carService;

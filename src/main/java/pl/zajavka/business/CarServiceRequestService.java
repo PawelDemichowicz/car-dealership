@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.zajavka.business.dao.CarServiceRequestDAO;
-import pl.zajavka.business.management.FileDataPreparationService;
 import pl.zajavka.domain.*;
 import pl.zajavka.domain.exception.ProcessingException;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -17,7 +15,6 @@ import java.util.Set;
 @Service
 @AllArgsConstructor
 public class CarServiceRequestService {
-    private final FileDataPreparationService fileDataPreparationService;
 
     private final CarService carService;
     private final CustomerService customerService;
