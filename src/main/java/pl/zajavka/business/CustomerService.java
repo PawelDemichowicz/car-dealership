@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.zajavka.business.dao.CustomerDAO;
 import pl.zajavka.domain.Customer;
+import pl.zajavka.domain.exception.NotFoundException;
 
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public class CustomerService {
     public Customer findCustomer(String email) {
         Optional<Customer> customer = customerDAO.findByEmail(email);
         if (customer.isEmpty()) {
-            throw new RuntimeException("Could not find customer by email: [%s]".formatted(email));
+            throw new NotFoundException("Could not find customer by email: [%s]".formatted(email));
         }
         return customer.get();
     }

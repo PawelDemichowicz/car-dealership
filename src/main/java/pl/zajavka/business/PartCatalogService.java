@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.zajavka.business.dao.PartDAO;
 import pl.zajavka.domain.Part;
+import pl.zajavka.domain.exception.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,7 @@ public class PartCatalogService {
     public Part findPart(String partSerialNumber) {
         Optional<Part> service = partDAO.findBySerialNumber(partSerialNumber);
         if (service.isEmpty()) {
-            throw new RuntimeException("Could not find service by part code: [%s]".formatted(partSerialNumber));
+            throw new NotFoundException("Could not find service by part code: [%s]".formatted(partSerialNumber));
         }
         return service.get();
     }

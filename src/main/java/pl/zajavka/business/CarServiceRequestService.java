@@ -113,13 +113,13 @@ public class CarServiceRequestService {
     public CarServiceRequest findAnyActiveServiceRequest(String carVin) {
         Set<CarServiceRequest> serviceRequests = carServiceRequestDAO.findActiveServiceRequestsByCarVin(carVin);
         if (serviceRequests.size() != 1) {
-            throw new RuntimeException(
+            throw new ProcessingException(
                     "There should be only one active service request at time, car vin: [%s]".formatted(carVin));
         }
         return serviceRequests.stream()
                 .findAny()
                 .orElseThrow(() ->
-                        new RuntimeException("There should be only one active service request at time, car vin: [%s]"
+                        new ProcessingException("There should be only one active service request at time, car vin: [%s]"
                                 .formatted(carVin)));
     }
 }
