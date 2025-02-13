@@ -1,9 +1,17 @@
 package pl.zajavka.api.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.util.Optional.ofNullable;
 
 @Data
 @Builder
@@ -11,10 +19,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CarPurchaseDTO {
 
+    @Email
     private String existingCustomerEmail;
+
     private String customerName;
     private String customerSurname;
+    @Size
+    @Pattern(regexp = "^[+]\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}$")
     private String customerPhone;
+    @Email
     private String customerEmail;
     private String customerAddressCountry;
     private String customerAddressCity;
@@ -35,5 +48,20 @@ public class CarPurchaseDTO {
                 .customerAddressPostalCode("50-100")
                 .customerAddressStreet("Zajavkowa 17")
                 .build();
+    }
+
+    public Map<String, String> asMap() {
+        Map<String, String> result = new HashMap<>();
+        ofNullable(existingCustomerEmail).ifPresent(value -> result.put("existingCustomerEmail", value));
+        ofNullable(customerName).ifPresent(value -> result.put("customerName", value));
+        ofNullable(customerSurname).ifPresent(value -> result.put("customerSurname", value));
+        ofNullable(customerPhone).ifPresent(value -> result.put("customerPhone", value));
+        ofNullable(customerEmail).ifPresent(value -> result.put("customerEmail", value));
+        ofNullable(customerAddressCountry).ifPresent(value -> result.put("customerAddressCountry", value));
+        ofNullable(customerAddressCity).ifPresent(value -> result.put("customerAddressCity", value));
+        ofNullable(customerAddressPostalCode).ifPresent(value -> result.put("customerAddressPostalCode", value));
+        ofNullable(carVin).ifPresent(value -> result.put("carVin", value));
+        ofNullable(salesmanPesel).ifPresent(value -> result.put("salesmanPesel", value));
+        return result;
     }
 }
