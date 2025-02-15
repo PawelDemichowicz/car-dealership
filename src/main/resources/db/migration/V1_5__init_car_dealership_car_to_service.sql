@@ -4,7 +4,7 @@ CREATE TABLE car_to_service
     vin    VARCHAR(20)          NOT NULL,
     brand  VARCHAR(32)          NOT NULL,
     model  VARCHAR(32)          NOT NULL,
-    year   SMALLINT             NOT NULL,
+    year   INTEGER              NOT NULL,
     PRIMARY KEY (car_to_service_id),
     UNIQUE (vin)
 );
