@@ -3,7 +3,13 @@ server:
   servlet:
     context-path: /car-dealership
 
+api:
+  cepik:
+    url: https://api.cepik.gov.pl/
+
 spring:
+  security:
+    enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
