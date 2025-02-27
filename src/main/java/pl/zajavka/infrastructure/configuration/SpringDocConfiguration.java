@@ -7,7 +7,7 @@ import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.w3c.dom.CDATASection;
+import pl.zajavka.CarDealershipApplication;
 
 @Configuration
 public class SpringDocConfiguration {
@@ -17,7 +17,7 @@ public class SpringDocConfiguration {
         return GroupedOpenApi.builder()
                 .group("default")
                 .pathsToMatch("/**")
-                .packagesToScan(CDATASection.class.getPackageName())
+                .packagesToScan(CarDealershipApplication.class.getPackageName())
                 .build();
     }
 
@@ -33,8 +33,7 @@ public class SpringDocConfiguration {
 
     private Contact contact() {
         return new Contact()
-                .name("Zajavka")
-                .url("")
-                .email("");
+                .name("Pawel")
+                .url("https://github.com/PawelDemichowicz");
     }
 }
