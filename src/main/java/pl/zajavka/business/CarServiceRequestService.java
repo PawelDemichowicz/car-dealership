@@ -67,7 +67,7 @@ public class CarServiceRequestService {
         Set<CarServiceRequest> serviceRequests = carServiceRequestDAO.findActiveServiceRequestsByCarVin(carVin);
         if (serviceRequests.size() == 1) {
             throw new ProcessingException(
-                    "there should be ony one active service request at a time, car vin: [%s]".formatted(carVin)
+                    "There should be only one active service request at a time, car vin: [%s]".formatted(carVin)
             );
         }
     }

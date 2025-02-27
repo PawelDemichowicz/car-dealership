@@ -42,7 +42,8 @@ public class CarDealershipUserDetailsService implements UserDetailsService {
                 user.getActive(),
                 true,
                 true,
-                true, authorities
+                true,
+                authorities
         );
     }
 }

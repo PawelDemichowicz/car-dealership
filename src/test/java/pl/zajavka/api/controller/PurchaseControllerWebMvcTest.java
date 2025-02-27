@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = PurchaseController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @AllArgsConstructor(onConstructor_ = @__(@Autowired))
-public class PurchaseControllerTest {
+public class PurchaseControllerWebMvcTest {
 
     private MockMvc mockMvc;
 

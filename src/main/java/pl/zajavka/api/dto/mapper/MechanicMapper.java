@@ -8,5 +8,4 @@ import pl.zajavka.domain.Mechanic;
 public interface MechanicMapper {
 
     MechanicDTO map(final Mechanic mechanic);
-
 }

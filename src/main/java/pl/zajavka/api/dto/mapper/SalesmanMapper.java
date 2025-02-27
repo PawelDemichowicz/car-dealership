@@ -8,5 +8,4 @@ import pl.zajavka.domain.Salesman;
 public interface SalesmanMapper {
 
     SalesmanDTO map(final Salesman salesman);
-
 }

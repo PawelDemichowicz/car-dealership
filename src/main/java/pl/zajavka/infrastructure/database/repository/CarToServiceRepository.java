@@ -15,8 +15,8 @@ import java.util.Optional;
 @Repository
 @AllArgsConstructor
 public class CarToServiceRepository implements CarToServiceDAO {
-    private final CarToServiceJpaRepository carToServiceJpaRepository;
 
+    private final CarToServiceJpaRepository carToServiceJpaRepository;
     private final CarToServiceEntityMapper carToServiceEntityMapper;
 
     @Override

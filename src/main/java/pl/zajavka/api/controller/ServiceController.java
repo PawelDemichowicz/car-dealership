@@ -34,12 +34,8 @@ public class ServiceController {
 
     @PostMapping(value = SERVICE_REQUEST)
     public String makeServiceRequest(
-            @ModelAttribute("carServiceRequestDTO") CarServiceCustomerRequestDTO carServiceCustomerRequestDTO,
-            BindingResult result
+            @ModelAttribute("carServiceRequestDTO") CarServiceCustomerRequestDTO carServiceCustomerRequestDTO
     ) {
-        if (result.hasErrors()) {
-            return "error";
-        }
         CarServiceRequest serviceRequest = carServiceRequestMapper.map(carServiceCustomerRequestDTO);
         carServiceRequestService.makeServiceRequest(serviceRequest);
 

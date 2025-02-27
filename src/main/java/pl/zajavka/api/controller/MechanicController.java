@@ -3,7 +3,6 @@ package pl.zajavka.api.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -74,12 +73,8 @@ public class MechanicController {
     @PostMapping(value = MECHANIC_WORK_UNIT)
     public String mechanicWorkUnit(
             @ModelAttribute("carServiceRequestProcessDTO") CarServiceMechanicProcessingUnitDTO dto,
-            BindingResult result,
             ModelMap modelMap
     ) {
-        if (result.hasErrors()) {
-            return "error";
-        }
         CarServiceProcessingRequest request = carServiceRequestMapper.map(dto);
         carServiceProcessingService.process(request);
         if (dto.getDone()) {

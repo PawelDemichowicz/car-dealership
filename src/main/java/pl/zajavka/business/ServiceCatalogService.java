@@ -21,7 +21,7 @@ public class ServiceCatalogService {
     public Service findService(String serviceCode) {
         Optional<Service> service = serviceDAO.findByServiceCode(serviceCode);
         if (service.isEmpty()) {
-            throw new NotFoundException("Could not find service by serviceCode: [%s]".formatted(serviceCode));
+            throw new NotFoundException("Could not find service by service code: [%s]".formatted(serviceCode));
         }
         return service.get();
     }

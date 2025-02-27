@@ -20,11 +20,11 @@ public class PartCatalogService {
 
     @Transactional
     public Part findPart(String partSerialNumber) {
-        Optional<Part> service = partDAO.findBySerialNumber(partSerialNumber);
-        if (service.isEmpty()) {
-            throw new NotFoundException("Could not find service by part code: [%s]".formatted(partSerialNumber));
+        Optional<Part> part = partDAO.findBySerialNumber(partSerialNumber);
+        if (part.isEmpty()) {
+            throw new NotFoundException("Could not find part by part serial number: [%s]".formatted(partSerialNumber));
         }
-        return service.get();
+        return part.get();
     }
 
     public List<Part> findAll() {

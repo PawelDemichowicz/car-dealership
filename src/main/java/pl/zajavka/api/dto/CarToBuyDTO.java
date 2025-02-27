@@ -13,10 +13,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class CarToBuyDTO {
 
-    String vin;
-    String brand;
-    String model;
-    Integer year;
-    String color;
-    BigDecimal price;
+    private String vin;
+    private String brand;
+    private String model;
+    private Integer year;
+    private String color;
+    private BigDecimal price;
 }

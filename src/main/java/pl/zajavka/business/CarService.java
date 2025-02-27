@@ -18,8 +18,8 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class CarService {
-    private final CarToBuyDAO carToBuyDAO;
 
+    private final CarToBuyDAO carToBuyDAO;
     private final CarToServiceDAO carToServiceDAO;
 
     @Transactional
@@ -58,7 +58,6 @@ public class CarService {
     public CarToService saveCarToService(CarToService carToService) {
         return carToServiceDAO.saveCarToService(carToService);
     }
-
 
     public List<CarToService> findAllCarsWithHistory() {
         List<CarToService> allCars = carToServiceDAO.findAll();
