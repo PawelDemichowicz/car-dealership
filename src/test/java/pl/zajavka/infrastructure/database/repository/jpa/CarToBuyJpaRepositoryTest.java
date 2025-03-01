@@ -1,4 +1,4 @@
-package pl.zajavka.api.infrastructure.database.repository.jpa;
+package pl.zajavka.infrastructure.database.repository.jpa;
 
 import lombok.AllArgsConstructor;
 import org.assertj.core.api.Assertions;
@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import pl.zajavka.infrastructure.database.entity.CarToBuyEntity;
-import pl.zajavka.infrastructure.database.repository.jpa.CarToBuyJpaRepository;
 import pl.zajavka.integration.configuration.PersistenceContainerTestConfiguration;
 
 import java.util.List;
