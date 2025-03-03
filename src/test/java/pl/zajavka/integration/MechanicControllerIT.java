@@ -4,19 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import pl.zajavka.integration.configuration.AbstractIT;
 
 @RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
 public class MechanicControllerIT extends AbstractIT {
-
-    @LocalServerPort
-    private int port;
-
-    @Value("${server.servlet.context-path}")
-    private String basePath;
 
     private final TestRestTemplate testRestTemplate;
 

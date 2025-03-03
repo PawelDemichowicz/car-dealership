@@ -1,3 +1,6 @@
+api:
+  cepik:
+    url: http://localhost:9999
 spring:
   security:
     enabled: false
