@@ -15,7 +15,7 @@ insert into car_dealership_user (user_id, user_name, email, password, active) va
 insert into car_dealership_user (user_id, user_name, email, password, active) values (6, 'zygmunt_naprawa', 'zygmunt_naprawa@zajavka.pl', '$2a$12$TwQsp1IusXTDl7LwZqL0qeu49Ypr6vRdEzRq2vAsgb.zvOtrnzm5G', true);
 insert into car_dealership_user (user_id, user_name, email, password, active) values (7, 'remigiusz_alufelga', 'remigiusz_alufelga@zajavka.pl', '$2a$12$TwQsp1IusXTDl7LwZqL0qeu49Ypr6vRdEzRq2vAsgb.zvOtrnzm5G', true);
 
-insert into car_dealership_user (user_id, user_name, email, password, active) values (8, 'test_user', 'test_user@test.pl', '$2a$12$TwQsp1IusXTDl7LwZqL0qeu49Ypr6vRdEzRq2vAsgb', true);
+insert into car_dealership_user (user_id, user_name, email, password, active) values (8, 'test_user', 'test_user@test.pl', '$2a$12$TwQsp1IusXTDl7LwZqL0qeu49Ypr6vRdEzRq2vAsgb.zvOtrnzm5G', true);
 
 UPDATE salesman SET user_id = 1 WHERE pesel = '67020499436';
 UPDATE salesman SET user_id = 2 WHERE pesel = '73021314515';

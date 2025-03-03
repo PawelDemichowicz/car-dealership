@@ -8,20 +8,21 @@ import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import pl.zajavka.integration.support.AuthenticationTestSupport;
 import pl.zajavka.integration.support.ControllerTestSupport;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 public abstract class RestAssuredIntegrationTestBase
         extends AbstractIT
-        implements ControllerTestSupport {
+        implements ControllerTestSupport, AuthenticationTestSupport {
 
     protected static WireMockServer wireMockServer;
+
+    private String jSessionIdValue;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -45,8 +46,22 @@ public abstract class RestAssuredIntegrationTestBase
         wireMockServer.stop();
     }
 
+    @BeforeEach
+    void beforeEach() {
+        jSessionIdValue = login("test_user", "test")
+                .and()
+                .cookie("JSESSIONID")
+                .header(HttpHeaders.LOCATION, "http://localhost:%s%s/".formatted(port, basePath))
+                .extract()
+                .cookie("JSESSIONID");
+    }
+
     @AfterEach
     void afterEach() {
+        logout()
+                .and()
+                .cookie("JSESSIONID", "");
+        jSessionIdValue = null;
         wireMockServer.resetAll();
     }
 
@@ -58,7 +73,12 @@ public abstract class RestAssuredIntegrationTestBase
     public RequestSpecification requestSpecification() {
         return restAssuredBase()
                 .accept(ContentType.JSON)
-                .contentType(ContentType.JSON);
+                .contentType(ContentType.JSON)
+                .cookie("JSESSIONID", jSessionIdValue);
+    }
+
+    public RequestSpecification requestSpecificationNoAuthentication() {
+        return restAssuredBase();
     }
 
     private RequestSpecification restAssuredBase() {
