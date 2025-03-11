@@ -45,14 +45,17 @@ cd car-dealership
 
 
 4. **Run the application:**
-   If you want to run all tests, make sure Docker is running before proceeding. This is necessary because the tests use **Testcontainers**, which relies on Docker to create and manage containerized environments for testing.
 
 ```bash
 ./gradlew bootRun
 ```
 
 5. **Run tests:**
-   To run all tests, including those requiring Docker:
+
+   > **Important:** If you want to run all tests, make sure Docker is running before proceeding. This is necessary because the tests use **Testcontainers**, which relies on Docker to create and manage containerized environments for testing.
+   
+   
+   To run all tests:
 
 ```bash
 ./gradlew test
