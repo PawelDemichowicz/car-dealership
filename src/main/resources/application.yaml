@@ -8,12 +8,14 @@ api:
     url: https://api.cepik.gov.pl/
 
 spring:
+  config:
+    import: file:.env[.properties]
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/car_dealership
-    username: postgres
-    password: postgres
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     hikari:
       idle-timeout: 10000
       connectionTimeout: 20000
