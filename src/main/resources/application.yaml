@@ -7,9 +7,6 @@ api:
   cepik:
     url: https://api.cepik.gov.pl/
 
-spring:
-  config:
-    import: file:.env[.properties]
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
