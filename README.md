@@ -1,71 +1,115 @@
-# Car Dealership
+# 🚗 Car Dealership
 
-## Project Description
+## 📌 Project Description
+Car Dealership is an application written in Java that simulates the operation of a car dealership service system. The project was implemented as part of a bootcamp on the Zajavka platform to practice backend development skills.
 
-**Car Dealership** is an application written in Java that simulates the operation of a car dealership service system. The project was implemented as part of the learning process on the Zajavka platform and aimed at practicing the knowledge acquired from course materials.
+---
 
-## Technologies
-- **Java 17**
-- **Spring Boot**
-- **Spring Data JPA**
-- **Hibernate**
-- **PostgreSQL**
-- **Flyway** (database migrations)
-- **Lombok** (reducing boilerplate code)
-- **Gradle** (dependency management)
+## 🛠 Technologies
+- Java 17
+- Spring Boot
+- Spring Data JPA
+- Hibernate
+- PostgreSQL
+- Flyway (database migrations)
+- Lombok (reducing boilerplate code)
+- Gradle (build & dependency management)
+- **Docker & Docker Compose**
+- **Testcontainers (for integration testing)**
 
-## Features
+---
+
+## ✨ Features
 - Handling customers and dealership employees
 - Recording vehicle purchases
 - Creating car service requests
 - Integration with PostgreSQL database
-- Using relationships between entities with Hibernate
-- Automatic database migrations using Flyway
+- Entity relationships using Hibernate
+- Automatic DB migrations via Flyway
+- Basic authentication setup
+- External API integration (CEPiK)
 
-## Installation and Running
-1. **Clone the repository:**
+---
 
-```bash
-git clone https://github.com/PawelDemichowicz/car-dealership.git
-```
+## 🚀 Running the Application
 
-2. **Navigate to the project directory:**
+### Option 1: Run Locally Without Docker
 
-```bash
-cd car-dealership
-```
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/PawelDemichowicz/car-dealership.git
+   cd car-dealership
+   ```
 
-3. **Configure the PostgreSQL database:**
-    - Create a database.
-    - Create a .env file in the main directory of the project.
-    - Fill the .env file with the necessary database credentials, e.g.:
-      - DB_URL=database url
-      - DB_USERNAME=username
-      - DB_PASSWORD=password
+2. **Configure the database**
+   - Create a PostgreSQL database manually.
+   - Add a `.env` file in the root directory with:
+     ```
+     DB_URL=jdbc:postgresql://localhost:5432/your_db
+     DB_USERNAME=your_user
+     DB_PASSWORD=your_password
+     ```
+
+3. **Start the application**
+   ```bash
+   ./gradlew bootRun
+   ```
+
+---
+
+### Option 2: Run with Docker Compose (Recommended)
+
+> Make sure Docker and Docker Compose are installed and running.
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/PawelDemichowicz/car-dealership.git
+   cd car-dealership
+   ```
+
+2. **Configure the database**
+   - Add a `.env` file in the root directory with:
+     ```
+     DB_URL=jdbc:postgresql://localhost:5432/your_db
+     DB_USERNAME=your_user
+     DB_PASSWORD=your_password
+     ```
 
 
-4. **Run the application:**
+3. **Start containers**
+   ```bash
+   docker compose up --build
+   ```
 
-```bash
-./gradlew bootRun
-```
+4. The application will be accessible at `http://localhost:8190` (or as defined in `docker-compose.yml`)
 
-5. **Run tests:**
 
-   > **Important:** If you want to run all tests, make sure Docker is running before proceeding. This is necessary because the tests use **Testcontainers**, which relies on Docker to create and manage containerized environments for testing.
-   
-   
-   To run all tests:
+5. **To stop and clean up containers**
+   ```bash
+   docker compose down -v
+   ```
 
+---
+
+## 🧪 Running Tests
+
+> Integration tests use **Testcontainers**, so Docker must be running.
+
+Run all tests:
 ```bash
 ./gradlew test
 ```
 
-## Project Structure
-- **infrastructure/cepik/** – Configuration for consuming external API
-- **infrastructure/security/** – Basic security with user login configurations
-- **infrastructure/configuration/** – Spring configurations
-- **infrastructure/database/** – Data access layer
-- **business/** – Business logic layer of the application
-- **domain/** – Layer for encapsulating business objects
-- **api/** – API handling requests and views as MVC
+---
+
+## 📂 Project Structure
+```
+├── api/                      # API layer (MVC controllers)
+├── business/                 # Business logic layer
+├── domain/                   # Business domain models
+└── infrastructure/
+    ├── configuration/        # Spring configuration classes
+    ├── database/             # Data access layer (repositories)
+    ├── security/             # Basic security config
+    └── cepik/                # Integration with external CEPiK API
+```
